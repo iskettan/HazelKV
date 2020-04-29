@@ -20,6 +20,8 @@ class ThroughputTest {
 public:
     ThroughputTest(int numberOfReaders = 0, int numberOfWiters = 0, int numberOfOperations = 0, int numberOfKeys = 0);
     int calculateThroughput();
+    int simpleCorrecnessCheck();
+
 };
 
 

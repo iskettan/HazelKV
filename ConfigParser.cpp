@@ -15,18 +15,18 @@
  *
  * @param filePath a string to the config file path
  */
-void setLogLevel(std::string logLevel){
+void setLogLevel(std::string logLevel) {
     spdlog::set_pattern("[%H:%M:%f] [%^%l%$] [Th: %t] %v");
 
-    if(logLevel == "debug")
+    if (logLevel == "debug")
         spdlog::set_level(spdlog::level::debug);
-    else if(logLevel == "info")
+    else if (logLevel == "info")
         spdlog::set_level(spdlog::level::info);
-    else if(logLevel == "error")
+    else if (logLevel == "error")
         spdlog::set_level(spdlog::level::err);
-    else if(logLevel == "critical")
+    else if (logLevel == "critical")
         spdlog::set_level(spdlog::level::critical);
-    else if(logLevel == "off")
+    else if (logLevel == "off")
         spdlog::set_level(spdlog::level::off);
     else
         spdlog::error("wrong LOG_LEVEL, using default values");
@@ -39,18 +39,17 @@ void setLogLevel(std::string logLevel){
  *
  * @param filePath a string to the config file path
  */
-void setReliability(std::string reliability){
-    if (reliability == "cache"){
+void setReliability(std::string reliability) {
+    if (reliability == "cache") {
         Database::isReliable = false;
         spdlog::info("System is running in unreliable/cache mode");
-    }
-    else{
+    } else {
         Database::isReliable = true;
         spdlog::info("System is running in reliable config");
     }
 }
 
-void setRedoLogSizePerFile(int logSize){
+void setRedoLogSizePerFile(int logSize) {
     Database::eachLogSize = logSize * 1024 * 1024; // Convert from MB to B
     spdlog::info("Setting log size per file to: " + std::to_string(logSize) + "MB.");
 }
@@ -61,7 +60,7 @@ void setRedoLogSizePerFile(int logSize){
  * @param filePath a string to the config file path
  */
 void ConfigParser::parseConfig(std::string filePath) {
-    if(!std::filesystem::exists(filePath)){
+    if (!std::filesystem::exists(filePath)) {
         spdlog::error("config file path is wrong");
         return;
     }
@@ -69,15 +68,18 @@ void ConfigParser::parseConfig(std::string filePath) {
     std::ifstream infile(filePath);
     std::string key, value;
 
-    while (infile >> key >> value)
-    {
-        if(key == "LOG_LEVEL")
+    while (infile >> key >> value) {
+        if (key == "LOG_LEVEL")
             setLogLevel(value);
-        else if(key == "RELIABILITY")
+        else if (key == "RELIABILITY")
             setReliability(value);
-        else if(key == "REDO_LOG_SIZE_PER_FILE")
+        else if (key == "REDO_LOG_SIZE_PER_FILE")
             setRedoLogSizePerFile(stoi(value));
-
+        else if (key == "BATCH_SIZE") {
+            Database::BATCH_SIZE = stoi(value);
+        } else if (key == "REFRESH_RATE") {
+            Database::REFRESH_RATE = stoi(value);
+        }
 
     }
 }
@@ -89,7 +91,7 @@ void ConfigParser::parseConfig(std::string filePath) {
  * @param argv array of arguments
  */
 void ConfigParser::commandLineParser(int argc, char *argv[]) {
-    if(argc == 1)
+    if (argc == 1)
         spdlog::error("Please, provide a config file!");
     else if (argc == 2)
         ConfigParser::parseConfig(argv[1]);

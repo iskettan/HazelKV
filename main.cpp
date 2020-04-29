@@ -6,13 +6,13 @@
 #include "tests/ThroughputTest.h"
 
 
-int main(int argc, char *argv[]) { 
+int main(int argc, char *argv[]) {
     ConfigParser::commandLineParser(argc, argv);
 
-    std::thread logWriterThread(Database::batchPut);
+    std::thread logWriterThread(Database::batchApply);
     logWriterThread.detach();
 
-    ThroughputTest t(0, 512, 1000000, 10000);
+    ThroughputTest t(20, 2, 100000, 1000);
     t.calculateThroughput();
     return 0;
 }

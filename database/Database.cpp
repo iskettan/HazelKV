@@ -28,7 +28,7 @@ unsigned long Database::lastFileNumber = 0;
 std::string Database::logPath = "../persistantStorage/";
 
 // Which ever occurs first
-unsigned int Database::REFRESH_RATE = 1000; // in microSecond
+unsigned int Database::REFRESH_RATE = 2000; // in microSecond
 unsigned int Database::BATCH_SIZE = 256;
 
 std::condition_variable Database::completedBatchNumberCV;
@@ -47,6 +47,34 @@ std::string Database::get(std::string key) {
 
 bool Database::put(std::string key, std::string value) {
 
+    int currentCompletedBatchNumber;
+    {
+        // hold batchNumberlock
+        std::unique_lock<std::mutex> completedBatchNumLock(Database::completedBatchNumberMutex);
+        currentCompletedBatchNumber = Database::completedBatchNumber;
+
+        {
+            std::unique_lock<std::mutex> qm(Database::queueMutex);
+            if (queuedTasks.size() >= Database::BATCH_SIZE) {
+                Database::isBatchReady = true;
+                Database::batchReadyCV.notify_one();
+            }
+            Database::queuedTasks.push({key, value});
+        }
+        while (currentCompletedBatchNumber + 1 >=
+               Database::completedBatchNumber) { //because there might be a thread waiting to increment it
+            Database::completedBatchNumberCV.wait(completedBatchNumLock);
+        }
+
+
+        // wait for batchnumber to be bigger than when added a task
+    }
+    return true;
+
+}
+
+
+bool Database::batchPut(std::vector<std::pair<std::string, std::string>> &batch) {
 
     int currentCompletedBatchNumber;
     {
@@ -59,12 +87,16 @@ bool Database::put(std::string key, std::string value) {
             if (queuedTasks.size() >= Database::BATCH_SIZE) {
                 Database::isBatchReady = true;
                 batchReadyCV.notify_one();
-            } else {
-                Database::queuedTasks.push({key, value});
+            }
+            for (auto &keyValuePair : batch)
+                Database::queuedTasks.push(keyValuePair);
 
+            if (queuedTasks.size() >= Database::BATCH_SIZE) {
+                Database::isBatchReady = true;
+                batchReadyCV.notify_one();
             }
         }
-        while (currentCompletedBatchNumber >= Database::completedBatchNumber) {
+        while (currentCompletedBatchNumber + 1 >= Database::completedBatchNumber) {
             Database::completedBatchNumberCV.wait(completedBatchNumLock);
         }
         // wait for batchnumber to be bigger than when added a task
@@ -76,7 +108,7 @@ bool Database::put(std::string key, std::string value) {
 
 bool isBatchReadyFunc() { return Database::isBatchReady; }
 
-void Database::batchPut() {
+void Database::batchApply() {
     std::vector<std::pair<std::string, std::string>> tmpTasks;
     std::stringstream sstream;
     std::ofstream outfile;
@@ -87,6 +119,7 @@ void Database::batchPut() {
             Database::batchReadyCV.wait_for(lck, std::chrono::microseconds(Database::REFRESH_RATE), isBatchReadyFunc);
 
             // entered
+            Database::isBatchReady = false;
             tmpTasks = std::vector<std::pair<std::string, std::string>>(Database::queuedTasks.size());
 //            spdlog::critical(Database::queuedTasks.size());
             for (unsigned int i = 0; i < Database::queuedTasks.size(); i++) {
@@ -114,12 +147,12 @@ void Database::batchPut() {
             }
         }
 
-
-        for (auto &task : tmpTasks) {
+        {
             std::unique_lock<std::shared_mutex> l(Database::databaseWideMutex);
-            Database::database->insert(task);
+            for (auto &task : tmpTasks) {
+                (*Database::database)[task.first] = task.second;
+            }
         }
-
         std::unique_lock<std::mutex> batchNumberLock(Database::completedBatchNumberMutex);
         Database::completedBatchNumber++;
         Database::completedBatchNumberCV.notify_all();

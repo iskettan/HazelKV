@@ -40,8 +40,8 @@ public:
     Database();
     static std::string get(std::string key);
     static bool put(std::string key, std::string value);
-
-    static void batchPut();
+    static bool batchPut(std::vector<std::pair<std::string, std::string>>& batch);
+    static void batchApply();
 };
 
 #endif //HAZELKV_DATABASE_H
