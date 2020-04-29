@@ -14,9 +14,5 @@ int main(int argc, char *argv[]) {
 
     ThroughputTest t(20, 2, 10000000, 1000);
     t.calculateThroughput();
-    t.calculateThroughput();
-    t.calculateThroughput();
-    t.calculateThroughput();
-    t.calculateThroughput();
     return 1;
 }
