@@ -18,5 +18,5 @@ int main(int argc, char *argv[]) {
     t.calculateThroughput();
     t.calculateThroughput();
     t.calculateThroughput();
-    return 0;
+    return 1;
 }
