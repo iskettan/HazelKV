@@ -1,0 +1,4 @@
+LOG_LEVEL debug ##debug-info-error-critical-off ###default:info
+RELIABILITY reliable ##reliable-cache ###default:reliable
+RELIABLE_PATH /home/ibrahim/Hazel/HazelKV/persistantStorage ## if-hazel-is-reliable-it-will-appened-here
+REDO_LOG_SIZE_PER_FILE 16 # in-MB

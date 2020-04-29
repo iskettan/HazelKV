@@ -1,0 +1,129 @@
+
+#include <iostream>
+#include <unordered_map>
+#include "Database.h"
+#include <vector>
+#include "spdlog/spdlog.h"
+#include <fstream>
+#include <thread>
+#include <chrono>
+#include <sstream>
+
+std::unordered_map<std::string, std::string> *Database::database =
+        new std::unordered_map<std::string, std::string>();
+unsigned int Database::databaseMutexesSize = 1; // Currently, HazelKV only supports one bucket
+std::shared_mutex Database::databaseWideMutex;  // Currently, HazelKV only supports one bucket
+
+std::queue<std::pair<std::string, std::string>> Database::queuedTasks;
+std::mutex Database::queueMutex;
+
+std::condition_variable Database::batchReadyCV;
+bool Database::isBatchReady = false;
+
+bool Database::isReliable = true;
+unsigned long Database::eachLogSize = 16 * 1024 * 1024;
+
+unsigned long Database::lastFileNumber = 0;
+
+std::string Database::logPath = "../persistantStorage/";
+
+// Which ever occurs first
+unsigned int Database::REFRESH_RATE = 1000; // in microSecond
+unsigned int Database::BATCH_SIZE = 256;
+
+std::condition_variable Database::completedBatchNumberCV;
+std::mutex Database::completedBatchNumberMutex;
+unsigned long Database::completedBatchNumber = 0;
+
+
+std::string Database::get(std::string key) {
+    unsigned int mutexIndex = std::hash<std::string>{}(key) % Database::databaseMutexesSize;
+    std::shared_lock<std::shared_mutex> l(Database::databaseWideMutex); // TODO support multiple buckets
+    auto value = Database::database->find(key);
+    if (value == Database::database->end())
+        return "";
+    return value->second;
+}
+
+bool Database::put(std::string key, std::string value) {
+
+
+    int currentCompletedBatchNumber;
+    {
+        // hold batchNumberlock
+        std::unique_lock<std::mutex> completedBatchNumLock(Database::completedBatchNumberMutex);
+        currentCompletedBatchNumber = Database::completedBatchNumber;
+
+        {
+            std::unique_lock<std::mutex> qm(Database::queueMutex);
+            if (queuedTasks.size() >= Database::BATCH_SIZE) {
+                Database::isBatchReady = true;
+                batchReadyCV.notify_one();
+            } else {
+                Database::queuedTasks.push({key, value});
+
+            }
+        }
+        while (currentCompletedBatchNumber >= Database::completedBatchNumber) {
+            Database::completedBatchNumberCV.wait(completedBatchNumLock);
+        }
+        // wait for batchnumber to be bigger than when added a task
+    }
+    return true;
+
+}
+
+
+bool isBatchReadyFunc() { return Database::isBatchReady; }
+
+void Database::batchPut() {
+    std::vector<std::pair<std::string, std::string>> tmpTasks;
+    std::stringstream sstream;
+    std::ofstream outfile;
+    while (true) {
+
+        {
+            std::unique_lock<std::mutex> lck(Database::queueMutex);
+            Database::batchReadyCV.wait_for(lck, std::chrono::microseconds(Database::REFRESH_RATE), isBatchReadyFunc);
+
+            // entered
+            tmpTasks = std::vector<std::pair<std::string, std::string>>(Database::queuedTasks.size());
+//            spdlog::critical(Database::queuedTasks.size());
+            for (unsigned int i = 0; i < Database::queuedTasks.size(); i++) {
+                tmpTasks[i] = queuedTasks.front();
+                queuedTasks.pop();
+            }
+        }
+        if (Database::isReliable) {
+            {
+
+                outfile.open(Database::logPath + "redoLog_" +
+                             std::to_string(Database::lastFileNumber),
+                             std::ios_base::app); // append instead of overwrite
+                if (outfile.tellp() >= Database::eachLogSize)
+                    Database::lastFileNumber++;
+                for (auto &task : tmpTasks) {
+                    sstream << "K: " + task.first + "\n";
+                    sstream << "V: " + task.second + "\n";
+                    sstream << "C: " + std::to_string(
+                            std::hash<std::string>{}(task.first) + std::hash<std::string>{}(task.second)) + "\n";
+                }
+                outfile << sstream.rdbuf();
+                outfile.close();
+
+            }
+        }
+
+
+        for (auto &task : tmpTasks) {
+            std::unique_lock<std::shared_mutex> l(Database::databaseWideMutex);
+            Database::database->insert(task);
+        }
+
+        std::unique_lock<std::mutex> batchNumberLock(Database::completedBatchNumberMutex);
+        Database::completedBatchNumber++;
+        Database::completedBatchNumberCV.notify_all();
+
+    }
+
+}
