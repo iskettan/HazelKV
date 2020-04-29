@@ -54,6 +54,16 @@ void setRedoLogSizePerFile(int logSize) {
     spdlog::info("Setting log size per file to: " + std::to_string(logSize) + "MB.");
 }
 
+void setBatchSize(unsigned int batchSize) {
+    Database::BATCH_SIZE = batchSize;
+    spdlog::info("Setting BATCH_SIZE to: " + std::to_string(Database::BATCH_SIZE));
+}
+
+void setRefreshRate(int rate) {
+    Database::REFRESH_RATE = rate;
+    spdlog::info("Setting REFRESH_RATE to: " + std::to_string(Database::REFRESH_RATE));
+}
+
 /**
  * Parse the config file.
  *
@@ -66,9 +76,12 @@ void ConfigParser::parseConfig(std::string filePath) {
     }
 
     std::ifstream infile(filePath);
-    std::string key, value;
+    std::string line;
+    while (std::getline(infile, line)) {
+        std::istringstream iss(line);
+        std::string key, value;
+        iss >> key >> value;
 
-    while (infile >> key >> value) {
         if (key == "LOG_LEVEL")
             setLogLevel(value);
         else if (key == "RELIABILITY")
@@ -76,11 +89,10 @@ void ConfigParser::parseConfig(std::string filePath) {
         else if (key == "REDO_LOG_SIZE_PER_FILE")
             setRedoLogSizePerFile(stoi(value));
         else if (key == "BATCH_SIZE") {
-            Database::BATCH_SIZE = stoi(value);
+            setBatchSize(stoi(value));
         } else if (key == "REFRESH_RATE") {
-            Database::REFRESH_RATE = stoi(value);
+            setRefreshRate(stoi(value));
         }
-
     }
 }
 
