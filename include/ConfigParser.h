@@ -13,6 +13,8 @@ class ConfigParser {
 public:
     static void parseConfig(std::string filePath);
     static void commandLineParser(int argc, char *argv[]);
+    static void checkConfig();
+
 };
 
 

@@ -27,7 +27,7 @@ set(_GRPC_GRPCPP grpc++)
 include_directories(include)
 include_directories(database/include)
 
-add_executable(HazelKV main.cpp ConfigParser.cpp database/Database.cpp tests/ThroughputTest.cpp tests/ThroughputTest.h)
+add_executable(HazelKV main.cpp ConfigParser.cpp database/Database.cpp tests/ThroughputTest.cpp tests/ThroughputTest.h Node.cpp Node.h)
 
 target_link_libraries(HazelKV spdlog)
 target_link_libraries(HazelKV grpc++)

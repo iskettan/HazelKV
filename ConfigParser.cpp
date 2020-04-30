@@ -9,6 +9,7 @@
 #include "spdlog/spdlog.h"
 #include <filesystem>
 #include "Database.h"
+#include "Node.h"
 
 /**
  * Set the logging level.
@@ -63,7 +64,17 @@ void setRefreshRate(int rate) {
     Database::REFRESH_RATE = rate;
     spdlog::info("Setting REFRESH_RATE to: " + std::to_string(Database::REFRESH_RATE));
 }
+void setNodeIP(std::string ipAndPort){
+    Node::nodeIp = ipAndPort.substr(0,ipAndPort.find(":"));
+    Node::nodePort = (unsigned short) stoi(ipAndPort.substr(ipAndPort.find(":") + 1));
+    spdlog::info("Node Ip: " + Node::nodeIp);
+    spdlog::info("Node Port: " + std::to_string(Node::nodePort));
+}
 
+void setReliablePath(std::string path){
+    Database::logPath = path;
+    spdlog::info("Redo log path is set to: " + path);
+}
 /**
  * Parse the config file.
  *
@@ -86,6 +97,8 @@ void ConfigParser::parseConfig(std::string filePath) {
             setLogLevel(value);
         else if (key == "RELIABILITY")
             setReliability(value);
+        else if(key == "RELIABLE_PATH")
+            setReliablePath(value);
         else if (key == "REDO_LOG_SIZE_PER_FILE")
             setRedoLogSizePerFile(stoi(value));
         else if (key == "BATCH_SIZE") {
@@ -93,6 +106,8 @@ void ConfigParser::parseConfig(std::string filePath) {
         } else if (key == "REFRESH_RATE") {
             setRefreshRate(stoi(value));
         }
+        else if(key == "NODE_IP")
+            setNodeIP(value);
     }
 }
 
@@ -111,3 +126,13 @@ void ConfigParser::commandLineParser(int argc, char *argv[]) {
         spdlog::error("Wrong number of arguments has been given");
 }
 
+void ConfigParser::checkConfig(){
+    if(Node::nodeIp == "" || Node::nodePort == 0){
+        spdlog::critical("You must provide node ip and port in the config file");
+        exit(-1);
+    }
+    if(Database::isReliable && Database::logPath == ""){
+        spdlog::critical("Since HazelKV is running in reliable mode, You must provide a path for the redo log in config file");
+        exit(-1);
+    }
+}

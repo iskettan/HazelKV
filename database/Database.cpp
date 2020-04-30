@@ -25,7 +25,7 @@ unsigned long Database::eachLogSize = 16 * 1024 * 1024;
 
 unsigned long Database::lastFileNumber = 0;
 
-std::string Database::logPath = "../persistantStorage/";
+std::string Database::logPath = "";
 
 // Which ever occurs first
 unsigned int Database::REFRESH_RATE = 2000; // in microSecond
@@ -55,19 +55,17 @@ bool Database::put(std::string key, std::string value) {
 
         {
             std::unique_lock<std::mutex> qm(Database::queueMutex);
+
+            Database::queuedTasks.push({key, value});
             if (queuedTasks.size() >= Database::BATCH_SIZE) {
                 Database::isBatchReady = true;
                 Database::batchReadyCV.notify_one();
             }
-            Database::queuedTasks.push({key, value});
         }
         while (currentCompletedBatchNumber + 1 >=
                Database::completedBatchNumber) { //because there might be a thread waiting to increment it
             Database::completedBatchNumberCV.wait(completedBatchNumLock);
         }
-
-
-        // wait for batchnumber to be bigger than when added a task
     }
     return true;
 
@@ -84,13 +82,9 @@ bool Database::batchPut(std::vector<std::pair<std::string, std::string>> &batch)
 
         {
             std::unique_lock<std::mutex> qm(Database::queueMutex);
-            if (queuedTasks.size() >= Database::BATCH_SIZE) {
-                Database::isBatchReady = true;
-                batchReadyCV.notify_one();
-            }
+
             for (auto &keyValuePair : batch)
                 Database::queuedTasks.push(keyValuePair);
-
             if (queuedTasks.size() >= Database::BATCH_SIZE) {
                 Database::isBatchReady = true;
                 batchReadyCV.notify_one();
