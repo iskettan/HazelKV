@@ -123,6 +123,7 @@ void Database::batchApply() {
         }
         if (Database::isReliable) {
             {
+//int8_t x = 200;
 
                 outfile.open(Database::logPath + "redoLog_" +
                              std::to_string(Database::lastFileNumber),

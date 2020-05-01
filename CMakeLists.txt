@@ -1,33 +1,32 @@
 cmake_minimum_required(VERSION 3.16)
 project(HazelKV)
-set(CMAKE_CXX_STANDARD 20)
+
+set(CMAKE_CXX_STANDARD 17)
+
+
 include(FetchContent)
-
-FetchContent_Declare(
-  gRPC
-  GIT_REPOSITORY https://github.com/grpc/grpc
-  GIT_TAG        v1.28.1
-  )
-
 FetchContent_Declare(
   spdlog
   GIT_REPOSITORY https://github.com/gabime/spdlog
   GIT_TAG        v1.5.0
   )
-
-
-set(FETCHCONTENT_QUIET OFF)
-FetchContent_MakeAvailable(gRPC)
 FetchContent_MakeAvailable(spdlog)
 
-set(_PROTOBUF_LIBPROTOBUF libprotobuf)
-set(_REFLECTION grpc++_reflection)
-set(_GRPC_GRPCPP grpc++)
+find_package(Protobuf)
 
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS proto/hazelKV.proto)
+
+include_directories(cmake-build-debug)
 include_directories(include)
+include_directories(proto/)
 include_directories(database/include)
 
-add_executable(HazelKV main.cpp ConfigParser.cpp database/Database.cpp tests/ThroughputTest.cpp tests/ThroughputTest.h Node.cpp Node.h)
+add_executable(HazelKV   main.cpp ConfigParser.cpp database/Database.cpp tests/ThroughputTest.cpp Node.cpp
+        ${PROTO_HDRS}
+        ${PROTO_SRCS}
+        )
+target_link_libraries(HazelKV spdlog
+        protobuf
+        #grpc++_reflection libprotobuf grpc++
+        )
 
-target_link_libraries(HazelKV spdlog)
-target_link_libraries(HazelKV grpc++)
