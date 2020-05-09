@@ -11,10 +11,14 @@
 
 std::unordered_map<std::string, std::string> *Database::database =
         new std::unordered_map<std::string, std::string>();
+std::unordered_map<std::string, long long> *Database::commitIndexDatabase =
+        new std::unordered_map<std::string, long long>();
+std::unordered_map<std::string, long long> *Database::potentialCommitIndexDatabase =
+        new std::unordered_map<std::string, long long>();
 unsigned int Database::databaseMutexesSize = 1; // Currently, HazelKV only supports one bucket
 std::shared_mutex Database::databaseWideMutex;  // Currently, HazelKV only supports one bucket
 
-std::queue<std::pair<std::string, std::string>> Database::queuedTasks;
+std::queue<std::pair<std::string, QueuedTask>> Database::queuedTasks;
 std::mutex Database::queueMutex;
 
 std::condition_variable Database::batchReadyCV;
@@ -36,16 +40,28 @@ std::mutex Database::completedBatchNumberMutex;
 unsigned long Database::completedBatchNumber = 0;
 
 
-std::string Database::get(std::string key) {
+std::pair<std::string, int> Database::get(std::string key) {
     unsigned int mutexIndex = std::hash<std::string>{}(key) % Database::databaseMutexesSize;
     std::shared_lock<std::shared_mutex> l(Database::databaseWideMutex); // TODO support multiple buckets
+
+
     auto value = Database::database->find(key);
+    auto commitIndex = Database::commitIndexDatabase->find(key);
+    if(commitIndex == Database::commitIndexDatabase->end())
+        return {"", 0};
     if (value == Database::database->end())
-        return "";
-    return value->second;
+        return {"",0};
+
+    return {value->second, commitIndex->second};
 }
 
-bool Database::put(std::string key, std::string value) {
+long long Database::put(std::string key) {
+    std::unique_lock<std::mutex> qm(Database::queueMutex);
+    return ++(*Database::potentialCommitIndexDatabase)[key];
+}
+
+
+bool Database::commit(std::string key, std::string value, long long commitIndex) {
 
     int currentCompletedBatchNumber;
     {
@@ -56,7 +72,15 @@ bool Database::put(std::string key, std::string value) {
         {
             std::unique_lock<std::mutex> qm(Database::queueMutex);
 
-            Database::queuedTasks.push({key, value});
+            Database::potentialCommitIndexDatabase->find(key);
+
+            QueuedTask qt;
+            qt.operation = COMMIT;
+            qt.commitIndex = commitIndex;
+            qt.key = key;
+            qt.value = value;
+
+            Database::queuedTasks.push({key, qt});
             if (queuedTasks.size() >= Database::BATCH_SIZE) {
                 Database::isBatchReady = true;
                 Database::batchReadyCV.notify_one();
@@ -71,39 +95,39 @@ bool Database::put(std::string key, std::string value) {
 
 }
 
-
-bool Database::batchPut(std::vector<std::pair<std::string, std::string>> &batch) {
-
-    int currentCompletedBatchNumber;
-    {
-        // hold batchNumberlock
-        std::unique_lock<std::mutex> completedBatchNumLock(Database::completedBatchNumberMutex);
-        currentCompletedBatchNumber = Database::completedBatchNumber;
-
-        {
-            std::unique_lock<std::mutex> qm(Database::queueMutex);
-
-            for (auto &keyValuePair : batch)
-                Database::queuedTasks.push(keyValuePair);
-            if (queuedTasks.size() >= Database::BATCH_SIZE) {
-                Database::isBatchReady = true;
-                batchReadyCV.notify_one();
-            }
-        }
-        while (currentCompletedBatchNumber + 1 >= Database::completedBatchNumber) {
-            Database::completedBatchNumberCV.wait(completedBatchNumLock);
-        }
-        // wait for batchnumber to be bigger than when added a task
-    }
-    return true;
-
-}
+//
+//bool Database::batchPut(std::vector<std::pair<std::string, std::string>> &batch) {
+//
+//    int currentCompletedBatchNumber;
+//    {
+//        // hold batchNumberlock
+//        std::unique_lock<std::mutex> completedBatchNumLock(Database::completedBatchNumberMutex);
+//        currentCompletedBatchNumber = Database::completedBatchNumber;
+//
+//        {
+//            std::unique_lock<std::mutex> qm(Database::queueMutex);
+//
+//            for (auto &keyValuePair : batch)
+//                Database::queuedTasks.push(keyValuePair);
+//            if (queuedTasks.size() >= Database::BATCH_SIZE) {
+//                Database::isBatchReady = true;
+//                batchReadyCV.notify_one();
+//            }
+//        }
+//        while (currentCompletedBatchNumber + 1 >= Database::completedBatchNumber) {
+//            Database::completedBatchNumberCV.wait(completedBatchNumLock);
+//        }
+//        // wait for batchnumber to be bigger than when added a task
+//    }
+//    return true;
+//
+//}
 
 
 bool isBatchReadyFunc() { return Database::isBatchReady; }
 
 void Database::batchApply() {
-    std::vector<std::pair<std::string, std::string>> tmpTasks;
+    std::vector<std::pair<std::string, QueuedTask>> tmpTasks;
     std::stringstream sstream;
     std::ofstream outfile;
     while (true) {
@@ -114,8 +138,7 @@ void Database::batchApply() {
 
             // entered
             Database::isBatchReady = false;
-            tmpTasks = std::vector<std::pair<std::string, std::string>>(Database::queuedTasks.size());
-//            spdlog::critical(Database::queuedTasks.size());
+            tmpTasks = std::vector<std::pair<std::string, QueuedTask>>(Database::queuedTasks.size());
             for (unsigned int i = 0; i < Database::queuedTasks.size(); i++) {
                 tmpTasks[i] = queuedTasks.front();
                 queuedTasks.pop();
@@ -123,7 +146,7 @@ void Database::batchApply() {
         }
         if (Database::isReliable) {
             {
-//int8_t x = 200;
+
 
                 outfile.open(Database::logPath + "redoLog_" +
                              std::to_string(Database::lastFileNumber),
@@ -131,10 +154,12 @@ void Database::batchApply() {
                 if (outfile.tellp() >= Database::eachLogSize)
                     Database::lastFileNumber++;
                 for (auto &task : tmpTasks) {
+                    if(task.second.operation == PUT)
+                        continue;
                     sstream << "K: " + task.first + "\n";
-                    sstream << "V: " + task.second + "\n";
+                    sstream << "V: " + task.second.value + "\n";
                     sstream << "C: " + std::to_string(
-                            std::hash<std::string>{}(task.first) + std::hash<std::string>{}(task.second)) + "\n";
+                            std::hash<std::string>{}(task.first) + std::hash<std::string>{}(task.second.value)) + "\n";
                 }
                 outfile << sstream.rdbuf();
                 outfile.close();
@@ -145,7 +170,11 @@ void Database::batchApply() {
         {
             std::unique_lock<std::shared_mutex> l(Database::databaseWideMutex);
             for (auto &task : tmpTasks) {
-                (*Database::database)[task.first] = task.second;
+
+                if(task.second.commitIndex > (*Database::commitIndexDatabase)[task.first] ){
+                    (*Database::commitIndexDatabase)[task.first] = task.second.commitIndex;
+                    (*Database::database)[task.first] = task.second.value;
+                }
             }
         }
         std::unique_lock<std::mutex> batchNumberLock(Database::completedBatchNumberMutex);

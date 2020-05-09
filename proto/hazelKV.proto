@@ -1,10 +1,14 @@
 syntax = "proto3";
-package helloworld;
+package hazelKVproto;
 
 // The greeting service definition.
-service Greeter {
+service GetPutService {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc sendGetRequest(getRequest) returns (getResponse) {}
+  rpc sendPutRequest(putRequest) returns (putResponse) {}
+  rpc sendCommitRequest(commitRequest) returns (commitResponse) {}
+
 }
 
 // The request message containing the user's name.
@@ -17,42 +21,43 @@ message HelloReply {
   string message = 1;
 }
 
-//message getRequest{
-//  int32 versionNumber = 1;
-//  int64 requestSequenceNumber = 2;
-//  string key = 3;
-//}
-//
-//message getResponse{
-//  int32 versionNumber = 1;
-//  int64 requestSequenceNumber = 2;
-//  string key = 3;
-//  string value = 4;
-//  int64 commitedSequenceNumber = 5;
-//}
-//
-//message putRequest{
-//  int32 versionNumber = 1;
-//  int64 requestSequenceNumber = 2;
-//  string key = 3;
-//}
-//
-//message putReponse{
-//  int32 versionNumber = 1;
-//  int64 requestSequenceNumber = 2;
-//  int64 putSequenceNumber = 3;
-//}
-//
-//message commitRequest{
-//  int32 versionNumber = 1;
-//  int64 requestSequenceNumber = 2;
-//  int64 commitIndex = 3;
-//  string key = 4;
-//  string value = 5;
-//}
-//
-//message commitResponse{
-//  int32 versionNumber = 1;
-//  int64 requestSequenceNumber = 2;
-//  int32 status = 3;
-//}
+message getRequest{
+  int32 versionNumber = 1;
+  int64 requestSequenceNumber = 2;
+  string key = 3;
+}
+
+message getResponse{
+  int32 versionNumber = 1;
+  int64 requestSequenceNumber = 2;
+  string key = 3;
+  string value = 4;
+  int64 commitedSequenceNumber = 5;
+}
+
+message putRequest{
+  int32 versionNumber = 1;
+  int64 requestSequenceNumber = 2;
+  string key = 3;
+}
+
+message putResponse{
+  int32 versionNumber = 1;
+  int64 requestSequenceNumber = 2;
+  int64 potentialCommitIndex = 3;
+  int64 putSequenceNumber = 4;
+}
+
+message commitRequest{
+  int32 versionNumber = 1;
+  int64 requestSequenceNumber = 2;
+  int64 commitIndex = 3;
+  string key = 4;
+  string value = 5;
+}
+
+message commitResponse{
+  int32 versionNumber = 1;
+  int64 requestSequenceNumber = 2;
+  int32 status = 3;
+}

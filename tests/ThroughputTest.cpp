@@ -27,8 +27,8 @@ void testPut(int numberOfOperations, int numberOfKeys) {
     std::vector<std::pair<std::string, std::string>> keyValueBatch(Database::BATCH_SIZE);
     for (int i = 0; i < numberOfOperations; i++) {
         keyValueBatch[i % Database::BATCH_SIZE] = {std::to_string(rand() % numberOfKeys), std::to_string(i)};
-        if (i % Database::BATCH_SIZE == Database::BATCH_SIZE - 1)
-            Database::batchPut(keyValueBatch);
+//        if (i % Database::BATCH_SIZE == Database::BATCH_SIZE - 1)
+//            Database::batchPut(keyValueBatch);
     }
 
 }
@@ -64,21 +64,21 @@ int ThroughputTest::calculateThroughput() {
     return 0;
 }
 
-
-int ThroughputTest::simpleCorrecnessCheck() {
-
-    for (int i = 0; i < numberOfOperations; i++) {
-        std::string key = std::to_string(rand() % numberOfKeys);
-        std::string value = std::to_string(i);
-        Database::put(key, value);
-        if (Database::get(key) != value) {
-            spdlog::critical("CORRECTNESS ERROR!");
-            spdlog::critical(Database::get(key) + "!=" +value);
-            assert(false);
-        }
-
-
-    }
-
-    return 0;
-}
+//
+//int ThroughputTest::simpleCorrecnessCheck() {
+//
+//    for (int i = 0; i < numberOfOperations; i++) {
+//        std::string key = std::to_string(rand() % numberOfKeys);
+//        std::string value = std::to_string(i);
+//        Database::put(key, value);
+//        if (Database::get(key) != value) {
+//            spdlog::critical("CORRECTNESS ERROR!");
+//            spdlog::critical(Database::get(key) + "!=" +value);
+//            assert(false);
+//        }
+//
+//
+//    }
+//
+//    return 0;
+//}

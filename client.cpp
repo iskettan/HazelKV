@@ -19,7 +19,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
-
+#include <thread>
 #include <grpcpp/grpcpp.h>
 
 #ifdef BAZEL_BUILD
@@ -31,15 +31,15 @@
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
-using helloworld::HelloRequest;
-using helloworld::HelloReply;
-using helloworld::Greeter;
+using hazelKVproto::HelloRequest;
+using hazelKVproto::HelloReply;
+using hazelKVproto::GetPutService;
 
 
 class GreeterClient {
  public:
   GreeterClient(std::shared_ptr<Channel> channel)
-      : stub_(Greeter::NewStub(channel)) {}
+      : stub_(GetPutService::NewStub(channel)) {}
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
@@ -69,22 +69,43 @@ class GreeterClient {
   }
 
  private:
-  std::unique_ptr<Greeter::Stub> stub_;
+  std::unique_ptr<GetPutService::Stub> stub_;
 };
 
-int main(int argc, char** argv) {
-  // Instantiate the client. It requires a channel, out of which the actual RPCs
-  // are created. This channel models a connection to an endpoint specified by
-  // the argument "--target=" which is the only expected argument.
-  // We indicate that the channel isn't authenticated (use of
-  // InsecureChannelCredentials()).
-  std::string target_str;
+void sendHelloWorld(){
+    std::string target_str;
   target_str = "localhost:50051";
   GreeterClient greeter(grpc::CreateChannel(
   target_str, grpc::InsecureChannelCredentials()));
   std::string user("world");
-  std::string reply = greeter.SayHello(user);
-  std::cout << "Greeter received: " << reply << std::endl;
+
+  for(int i = 0; i < 10; i++){
+      std::string reply = greeter.SayHello(user);
+//      std::cout << "Greeter received: " << reply << std::endl;
+  }
+}
+int main(int argc, char** argv) {
+      std::string target_str;
+      target_str = "localhost:50051";
+      GreeterClient greeter(grpc::CreateChannel(
+      target_str, grpc::InsecureChannelCredentials()));
+
+      std::string reply = greeter.SayHello(user);
+
+//    auto t1 = std::chrono::high_resolution_clock::now();
+//
+//
+//    std::vector<std::thread> threadsVector(10000);
+//    for(int i = 0; i < 10000; i++){
+//        threadsVector[i] = std::thread(sendHelloWorld);
+//    }
+//    for(int i = 0; i < 10000; i++){
+//        threadsVector[i].join();
+//    }
+//    auto t2 = std::chrono::high_resolution_clock::now();
+//    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>( t2 - t1 ).count();
+//
+//    std::cout << "throughput: " <<  100000000.0/(duration);
 
   return 0;
 }

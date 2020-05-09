@@ -1,0 +1,3 @@
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/_deps/protobuf-subbuild/CMakeFiles/edit_cache.dir
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/_deps/protobuf-subbuild/CMakeFiles/rebuild_cache.dir
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/_deps/protobuf-subbuild/CMakeFiles/protobuf-populate.dir

@@ -1,0 +1,878 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_33843/fast && /usr/bin/make -f CMakeFiles/cmTC_33843.dir/build.make CMakeFiles/cmTC_33843.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_33843.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD -fPIE   -o CMakeFiles/cmTC_33843.dir/src.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_33843
+/snap/clion/112/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_33843.dir/link.txt --verbose=1
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_33843.dir/src.c.o  -o cmTC_33843 
+/usr/bin/ld: CMakeFiles/cmTC_33843.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_33843.dir/build.make:87: cmTC_33843] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_33843/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_1dbef/fast && /usr/bin/make -f CMakeFiles/cmTC_1dbef.dir/build.make CMakeFiles/cmTC_1dbef.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1dbef.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -fPIE   -o CMakeFiles/cmTC_1dbef.dir/CheckFunctionExists.c.o   -c /snap/clion/112/bin/cmake/linux/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1dbef
+/snap/clion/112/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1dbef.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_1dbef.dir/CheckFunctionExists.c.o  -o cmTC_1dbef  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_1dbef.dir/build.make:87: cmTC_1dbef] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_1dbef/fast] Error 2
+
+
+
+Determining if the function res_servicename exists in the resolv failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_609d7/fast && /usr/bin/make -f CMakeFiles/cmTC_609d7.dir/build.make CMakeFiles/cmTC_609d7.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_609d7.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=res_servicename -fPIE   -o CMakeFiles/cmTC_609d7.dir/CheckFunctionExists.c.o   -c /snap/clion/112/bin/cmake/linux/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_609d7
+/snap/clion/112/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_609d7.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=res_servicename    CMakeFiles/cmTC_609d7.dir/CheckFunctionExists.c.o  -o cmTC_609d7  -lresolv 
+/usr/bin/ld: CMakeFiles/cmTC_609d7.dir/CheckFunctionExists.c.o: in function `main':
+CheckFunctionExists.c:(.text+0x14): undefined reference to `res_servicename'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_609d7.dir/build.make:87: cmTC_609d7] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_609d7/fast] Error 2
+
+
+
+Determining if the function gethostbyname exists in the socket failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_19a22/fast && /usr/bin/make -f CMakeFiles/cmTC_19a22.dir/build.make CMakeFiles/cmTC_19a22.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_19a22.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gethostbyname -fPIE   -o CMakeFiles/cmTC_19a22.dir/CheckFunctionExists.c.o   -c /snap/clion/112/bin/cmake/linux/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_19a22
+/snap/clion/112/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19a22.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gethostbyname    CMakeFiles/cmTC_19a22.dir/CheckFunctionExists.c.o  -o cmTC_19a22  -lsocket 
+/usr/bin/ld: cannot find -lsocket
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_19a22.dir/build.make:87: cmTC_19a22] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_19a22/fast] Error 2
+
+
+
+Determining if the function socket exists in the socket failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_22404/fast && /usr/bin/make -f CMakeFiles/cmTC_22404.dir/build.make CMakeFiles/cmTC_22404.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_22404.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=socket -fPIE   -o CMakeFiles/cmTC_22404.dir/CheckFunctionExists.c.o   -c /snap/clion/112/bin/cmake/linux/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_22404
+/snap/clion/112/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_22404.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=socket    CMakeFiles/cmTC_22404.dir/CheckFunctionExists.c.o  -o cmTC_22404  -lsocket 
+/usr/bin/ld: cannot find -lsocket
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_22404.dir/build.make:87: cmTC_22404] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_22404/fast] Error 2
+
+
+
+Determining if files socket.h exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_6cf23/fast && /usr/bin/make -f CMakeFiles/cmTC_6cf23.dir/build.make CMakeFiles/cmTC_6cf23.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6cf23.dir/HAVE_SOCKET_H.c.o
+/usr/bin/cc   -fPIE   -o CMakeFiles/cmTC_6cf23.dir/HAVE_SOCKET_H.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_SOCKET_H.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_SOCKET_H.c:2:10: fatal error: socket.h: No such file or directory
+    2 | #include <socket.h>
+      |          ^~~~~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_6cf23.dir/build.make:66: CMakeFiles/cmTC_6cf23.dir/HAVE_SOCKET_H.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_6cf23/fast] Error 2
+
+
+Source:
+/* */
+#include <socket.h>
+
+
+int main(void){return 0;}
+
+Determining if files stropts.h exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_6a283/fast && /usr/bin/make -f CMakeFiles/cmTC_6a283.dir/build.make CMakeFiles/cmTC_6a283.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6a283.dir/HAVE_STROPTS_H.c.o
+/usr/bin/cc   -fPIE   -o CMakeFiles/cmTC_6a283.dir/HAVE_STROPTS_H.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_STROPTS_H.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_STROPTS_H.c:2:10: fatal error: stropts.h: No such file or directory
+    2 | #include <stropts.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_6a283.dir/build.make:66: CMakeFiles/cmTC_6a283.dir/HAVE_STROPTS_H.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_6a283/fast] Error 2
+
+
+Source:
+/* */
+#include <stropts.h>
+
+
+int main(void){return 0;}
+
+Determining if files winsock2.h;windows.h exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_56fbd/fast && /usr/bin/make -f CMakeFiles/cmTC_56fbd.dir/build.make CMakeFiles/cmTC_56fbd.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_56fbd.dir/HAVE_WINSOCK2_H.c.o
+/usr/bin/cc   -fPIE   -o CMakeFiles/cmTC_56fbd.dir/HAVE_WINSOCK2_H.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WINSOCK2_H.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WINSOCK2_H.c:2:10: fatal error: winsock2.h: No such file or directory
+    2 | #include <winsock2.h>
+      |          ^~~~~~~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_56fbd.dir/build.make:66: CMakeFiles/cmTC_56fbd.dir/HAVE_WINSOCK2_H.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_56fbd/fast] Error 2
+
+
+Source:
+/* */
+#include <winsock2.h>
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Determining if files winsock2.h;ws2tcpip.h;windows.h exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b1f56/fast && /usr/bin/make -f CMakeFiles/cmTC_b1f56.dir/build.make CMakeFiles/cmTC_b1f56.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b1f56.dir/HAVE_WS2TCPIP_H.c.o
+/usr/bin/cc   -fPIE   -o CMakeFiles/cmTC_b1f56.dir/HAVE_WS2TCPIP_H.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WS2TCPIP_H.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WS2TCPIP_H.c:2:10: fatal error: winsock2.h: No such file or directory
+    2 | #include <winsock2.h>
+      |          ^~~~~~~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_b1f56.dir/build.make:66: CMakeFiles/cmTC_b1f56.dir/HAVE_WS2TCPIP_H.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_b1f56/fast] Error 2
+
+
+Source:
+/* */
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Determining if files winsock.h;windows.h exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_074c8/fast && /usr/bin/make -f CMakeFiles/cmTC_074c8.dir/build.make CMakeFiles/cmTC_074c8.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_074c8.dir/HAVE_WINSOCK_H.c.o
+/usr/bin/cc   -fPIE   -o CMakeFiles/cmTC_074c8.dir/HAVE_WINSOCK_H.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WINSOCK_H.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WINSOCK_H.c:2:10: fatal error: winsock.h: No such file or directory
+    2 | #include <winsock.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_074c8.dir/build.make:66: CMakeFiles/cmTC_074c8.dir/HAVE_WINSOCK_H.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_074c8/fast] Error 2
+
+
+Source:
+/* */
+#include <winsock.h>
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Determining if files windows.h exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_6a3f1/fast && /usr/bin/make -f CMakeFiles/cmTC_6a3f1.dir/build.make CMakeFiles/cmTC_6a3f1.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6a3f1.dir/HAVE_WINDOWS_H.c.o
+/usr/bin/cc   -fPIE   -o CMakeFiles/cmTC_6a3f1.dir/HAVE_WINDOWS_H.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WINDOWS_H.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CheckIncludeFiles/HAVE_WINDOWS_H.c:2:10: fatal error: windows.h: No such file or directory
+    2 | #include <windows.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_6a3f1.dir/build.make:66: CMakeFiles/cmTC_6a3f1.dir/HAVE_WINDOWS_H.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_6a3f1/fast] Error 2
+
+
+Source:
+/* */
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Performing C SOURCE FILE Test HAVE_TYPE_SOCKET failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_1f51f/fast && /usr/bin/make -f CMakeFiles/cmTC_1f51f.dir/build.make CMakeFiles/cmTC_1f51f.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1f51f.dir/src.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -DHAVE_TYPE_SOCKET -fPIE   -o CMakeFiles/cmTC_1f51f.dir/src.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/src.c:26:4: error: unknown type name ‘SOCKET’
+   26 |    SOCKET var_exists;
+      |    ^~~~~~
+make[1]: *** [CMakeFiles/cmTC_1f51f.dir/build.make:66: CMakeFiles/cmTC_1f51f.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_1f51f/fast] Error 2
+
+
+Source file was:
+
+		#include <stdio.h>
+		#include <stdlib.h>
+	
+		#include <stdbool.h>
+		#include <sys/types.h>
+		#include <arpa/inet.h>
+		#include <arpa/nameser.h>
+		#include <netdb.h>
+		#include <net/if.h>
+		#include <netinet/in.h>
+		#include <netinet/tcp.h>
+		#include <signal.h>
+		#include <stdlib.h>
+		#include <string.h>
+		#include <strings.h>
+		#include <sys/ioctl.h>
+		#include <sys/select.h>
+		#include <sys/socket.h>
+		#include <sys/time.h>
+		#include <sys/uio.h>
+		#include <time.h>
+		#include <fcntl.h>
+		#include <unistd.h>
+		int main() {
+			SOCKET var_exists;
+			(void)var_exists;
+			return 0;
+		}
+	
+Determining if the SO_NONBLOCK exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_25aaf/fast && /usr/bin/make -f CMakeFiles/cmTC_25aaf.dir/build.make CMakeFiles/cmTC_25aaf.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_25aaf.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_25aaf.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘SO_NONBLOCK’ undeclared (first use in this function); did you mean ‘O_NONBLOCK’?
+   27 |   return ((int*)(&SO_NONBLOCK))[argc];
+      |                   ^~~~~~~~~~~
+      |                   O_NONBLOCK
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_25aaf.dir/build.make:66: CMakeFiles/cmTC_25aaf.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_25aaf/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef SO_NONBLOCK
+  return ((int*)(&SO_NONBLOCK))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the bitncmp exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2d74a/fast && /usr/bin/make -f CMakeFiles/cmTC_2d74a.dir/build.make CMakeFiles/cmTC_2d74a.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2d74a.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_2d74a.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘bitncmp’ undeclared (first use in this function); did you mean ‘bcmp’?
+   27 |   return ((int*)(&bitncmp))[argc];
+      |                   ^~~~~~~
+      |                   bcmp
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_2d74a.dir/build.make:66: CMakeFiles/cmTC_2d74a.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_2d74a/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef bitncmp
+  return ((int*)(&bitncmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the closesocket exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_a5c4c/fast && /usr/bin/make -f CMakeFiles/cmTC_a5c4c.dir/build.make CMakeFiles/cmTC_a5c4c.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a5c4c.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_a5c4c.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘closesocket’ undeclared (first use in this function)
+   27 |   return ((int*)(&closesocket))[argc];
+      |                   ^~~~~~~~~~~
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_a5c4c.dir/build.make:66: CMakeFiles/cmTC_a5c4c.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_a5c4c/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef closesocket
+  return ((int*)(&closesocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the CloseSocket exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_681e8/fast && /usr/bin/make -f CMakeFiles/cmTC_681e8.dir/build.make CMakeFiles/cmTC_681e8.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_681e8.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_681e8.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘CloseSocket’ undeclared (first use in this function)
+   27 |   return ((int*)(&CloseSocket))[argc];
+      |                   ^~~~~~~~~~~
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_681e8.dir/build.make:66: CMakeFiles/cmTC_681e8.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_681e8/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CloseSocket
+  return ((int*)(&CloseSocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the inet_net_pton exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_1f83d/fast && /usr/bin/make -f CMakeFiles/cmTC_1f83d.dir/build.make CMakeFiles/cmTC_1f83d.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1f83d.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_1f83d.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_1f83d
+/snap/clion/112/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f83d.dir/link.txt --verbose=1
+/usr/bin/cc       -rdynamic CMakeFiles/cmTC_1f83d.dir/CheckSymbolExists.c.o  -o cmTC_1f83d  -lnsl -lrt 
+/usr/bin/ld: CMakeFiles/cmTC_1f83d.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `inet_net_pton'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_1f83d.dir/build.make:87: cmTC_1f83d] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_1f83d/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef inet_net_pton
+  return ((int*)(&inet_net_pton))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the ioctlsocket exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e6295/fast && /usr/bin/make -f CMakeFiles/cmTC_e6295.dir/build.make CMakeFiles/cmTC_e6295.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e6295.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_e6295.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘ioctlsocket’ undeclared (first use in this function)
+   27 |   return ((int*)(&ioctlsocket))[argc];
+      |                   ^~~~~~~~~~~
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_e6295.dir/build.make:66: CMakeFiles/cmTC_e6295.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_e6295/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef ioctlsocket
+  return ((int*)(&ioctlsocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the IoctlSocket exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4de44/fast && /usr/bin/make -f CMakeFiles/cmTC_4de44.dir/build.make CMakeFiles/cmTC_4de44.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4de44.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_4de44.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘IoctlSocket’ undeclared (first use in this function)
+   27 |   return ((int*)(&IoctlSocket))[argc];
+      |                   ^~~~~~~~~~~
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_4de44.dir/build.make:66: CMakeFiles/cmTC_4de44.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_4de44/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef IoctlSocket
+  return ((int*)(&IoctlSocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strcmpi exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_23367/fast && /usr/bin/make -f CMakeFiles/cmTC_23367.dir/build.make CMakeFiles/cmTC_23367.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_23367.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_23367.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘strcmpi’ undeclared (first use in this function); did you mean ‘strcmp’?
+   27 |   return ((int*)(&strcmpi))[argc];
+      |                   ^~~~~~~
+      |                   strcmp
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_23367.dir/build.make:66: CMakeFiles/cmTC_23367.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_23367/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strcmpi
+  return ((int*)(&strcmpi))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the stricmp exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_d50bd/fast && /usr/bin/make -f CMakeFiles/cmTC_d50bd.dir/build.make CMakeFiles/cmTC_d50bd.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d50bd.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_d50bd.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘stricmp’ undeclared (first use in this function); did you mean ‘strncmp’?
+   27 |   return ((int*)(&stricmp))[argc];
+      |                   ^~~~~~~
+      |                   strncmp
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_d50bd.dir/build.make:66: CMakeFiles/cmTC_d50bd.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_d50bd/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef stricmp
+  return ((int*)(&stricmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strncmpi exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e22a4/fast && /usr/bin/make -f CMakeFiles/cmTC_e22a4.dir/build.make CMakeFiles/cmTC_e22a4.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e22a4.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_e22a4.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘strncmpi’ undeclared (first use in this function); did you mean ‘strncmp’?
+   27 |   return ((int*)(&strncmpi))[argc];
+      |                   ^~~~~~~~
+      |                   strncmp
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_e22a4.dir/build.make:66: CMakeFiles/cmTC_e22a4.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_e22a4/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strncmpi
+  return ((int*)(&strncmpi))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strnicmp exist failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ad46e/fast && /usr/bin/make -f CMakeFiles/cmTC_ad46e.dir/build.make CMakeFiles/cmTC_ad46e.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ad46e.dir/CheckSymbolExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -fPIE   -o CMakeFiles/cmTC_ad46e.dir/CheckSymbolExists.c.o   -c /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: ‘strnicmp’ undeclared (first use in this function); did you mean ‘strncmp’?
+   27 |   return ((int*)(&strnicmp))[argc];
+      |                   ^~~~~~~~
+      |                   strncmp
+/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_ad46e.dir/build.make:66: CMakeFiles/cmTC_ad46e.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_ad46e/fast] Error 2
+
+
+File /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strnicmp
+  return ((int*)(&strnicmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the function __system_property_get exists failed with the following output:
+Change Dir: /home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_1fe29/fast && /usr/bin/make -f CMakeFiles/cmTC_1fe29.dir/build.make CMakeFiles/cmTC_1fe29.dir/build
+make[1]: Entering directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1fe29.dir/CheckFunctionExists.c.o
+/usr/bin/cc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -DCHECK_FUNCTION_EXISTS=__system_property_get -fPIE   -o CMakeFiles/cmTC_1fe29.dir/CheckFunctionExists.c.o   -c /snap/clion/112/bin/cmake/linux/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1fe29
+/snap/clion/112/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1fe29.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=__system_property_get    -rdynamic CMakeFiles/cmTC_1fe29.dir/CheckFunctionExists.c.o  -o cmTC_1fe29  -lnsl -lrt 
+/usr/bin/ld: CMakeFiles/cmTC_1fe29.dir/CheckFunctionExists.c.o: in function `main':
+CheckFunctionExists.c:(.text+0x14): undefined reference to `__system_property_get'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_1fe29.dir/build.make:87: cmTC_1fe29] Error 1
+make[1]: Leaving directory '/home/ibrahim/Hazel/HazelKV/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_1fe29/fast] Error 2
+
+
+

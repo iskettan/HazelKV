@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/HazelKVServer.dir/proto/serverTest.cpp.o CMakeFiles/HazelKVServer.dir/ConfigParser.cpp.o CMakeFiles/HazelKVServer.dir/hazelKV.grpc.pb.cc.o CMakeFiles/HazelKVServer.dir/hazelKV.pb.cc.o CMakeFiles/HazelKVServer.dir/database/Database.cpp.o CMakeFiles/HazelKVServer.dir/tests/ThroughputTest.cpp.o CMakeFiles/HazelKVServer.dir/Node.cpp.o  -o HazelKVServer 

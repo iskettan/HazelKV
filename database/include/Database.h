@@ -12,12 +12,23 @@
 #include <vector>
 #include <queue>
 
+enum TaskOperation { PUT, COMMIT };
+
+struct QueuedTask{
+    TaskOperation operation;
+    long long commitIndex;
+    std::string key;
+    std::string value;
+};
+
 class Database {
 //private:
 public:
     static std::unordered_map<std::string, std::string>* database;
+    static std::unordered_map<std::string, long long>* commitIndexDatabase;
+    static std::unordered_map<std::string, long long>* potentialCommitIndexDatabase;
 
-    static std::queue<std::pair<std::string, std::string>> queuedTasks;
+    static std::queue<std::pair<std::string, QueuedTask>> queuedTasks;
     static std::mutex queueMutex;
 
     static std::shared_mutex databaseWideMutex;
@@ -38,8 +49,9 @@ public:
     static unsigned int BATCH_SIZE;
 
     Database();
-    static std::string get(std::string key);
-    static bool put(std::string key, std::string value);
+    static std::pair<std::string,int> get(std::string key);
+    static long long put(std::string key);
+    static bool commit(std::string key, std::string value, long long commitIndex);
     static bool batchPut(std::vector<std::pair<std::string, std::string>>& batch);
     static void batchApply();
 };

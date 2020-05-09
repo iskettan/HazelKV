@@ -33,23 +33,54 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
-using helloworld::HelloRequest;
-using helloworld::HelloReply;
-using helloworld::Greeter;
+using hazelKVproto::HelloRequest;
+using hazelKVproto::HelloReply;
+using hazelKVproto::getRequest;
+using hazelKVproto::getResponse;
+using hazelKVproto::putRequest;
+using hazelKVproto::putResponse;
+using hazelKVproto::commitRequest;
+using hazelKVproto::commitResponse;
+using hazelKVproto::GetPutService;
 
 // Logic and data behind the server's behavior.
-class GreeterServiceImpl final : public Greeter::Service {
+class GetPutServiceImpl final : public GetPutService::Service {
   Status SayHello(ServerContext* context, const HelloRequest* request,
                   HelloReply* reply) override {
     std::string prefix("Hello ");
+//    long long potentialCommitIndex = Database::put("key");
     reply->set_message(prefix + request->name());
     return Status::OK;
   }
+
+    Status sendGetRequest(ServerContext* context, const getRequest* request,
+                  getResponse* reply) override {
+
+        auto response = Database::get(request->key());
+        reply -> set_key(request->key());
+        reply -> set_value(response.first);
+        reply -> set_commitedsequencenumber(response.second);
+        return Status::OK;
+  }
+
+    Status sendPutRequest(ServerContext* context, const putRequest* request,
+                  putResponse* reply) override {
+        reply -> set_potentialcommitindex(Database::put(request->key()));
+        return Status::OK;
+  }
+
+    Status sendCommitRequest(ServerContext* context, const commitRequest* request,
+                  commitResponse* reply) override {
+        Database::commit(request->key(), request->value(), request->commitindex());
+        return Status::OK;
+  }
+
 };
 
 
-int main(int argc, char *argv[]) {
 
+
+int main(int argc, char *argv[]) {
 
     ConfigParser::commandLineParser(argc, argv);
     ConfigParser::checkConfig();
@@ -61,13 +92,6 @@ int main(int argc, char *argv[]) {
 
 
 
-//    helloworld::HelloRequest r;
-//    r.set_name("batata");
-//    std::string tmp = r.SerializePartialAsString();
-//    spdlog::info(tmp);
-//
-//    helloworld::HelloRequest r2;
-//    r2.ParseFromString(tmp);
 //
 //    spdlog::info(r2.name());
 //
@@ -75,7 +99,7 @@ int main(int argc, char *argv[]) {
 //    t.calculateThroughput();
 
   std::string server_address("0.0.0.0:50051");
-  GreeterServiceImpl service;
+  GetPutServiceImpl service;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
